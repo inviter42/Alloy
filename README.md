@@ -1,4 +1,8 @@
 # Alloy
+
+## NOTICE
+This is an unofficial fork of Alloy that restores compatibility with Unity 5.5 in a dedicated branch.
+
 ## Pre-Import Checklist
 Alright, so we're ready to jump into some Alloy goodness, but there's a few things we want to make sure we're ready for depending on what the state of your project is, and what past version of Alloy (if any) are in your project.
 First and foremost, if you are importing a new version of Alloy into a project where _any_ prior version of Alloy existed, it's probably a good idea to have a backup of it (manual or version controlled), just in case something goes awry.
