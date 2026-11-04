@@ -23,7 +23,7 @@ AFragmentInput aMainVertexShader(
     float3 vertex : POSITION)
 {
     AFragmentInput o;
-    o.pos = UnityObjectToClipPos(vertex);
+    o.pos = mul(UNITY_MATRIX_MVP, vertex);
     o.uv = ComputeScreenPos(o.pos).xy;
     return o;
 }

@@ -61,10 +61,10 @@ struct AFragmentInput {
     UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
-UNITY_DECLARE_DEPTH_TEXTURE(_CameraDepthTexture);
+sampler2D_float _CameraDepthTexture;
 
 half4 _TintColor;
-A_SAMPLER_2D(_MainTex);	
+A_SAMPLER_2D(_MainTex);
 half _TintWeight;
 float _InvFade;
 
@@ -85,10 +85,10 @@ AFragmentInput aMainVertexShader(
     AVertexInput v)
 {
     AFragmentInput o;
-    UNITY_INITIALIZE_OUTPUT(AFragmentInput, o);               
+    UNITY_INITIALIZE_OUTPUT(AFragmentInput, o);
     UNITY_SETUP_INSTANCE_ID(v);
     UNITY_TRANSFER_INSTANCE_ID(v, o);
-    
+
     o.vertex = UnityObjectToClipPos(v.vertex.xyz);
 
 #if defined(SOFTPARTICLES_ON) || defined(_DISTANCE_FADE_ON) || defined(VTRANSPARENCY_ON)
@@ -97,13 +97,13 @@ AFragmentInput aMainVertexShader(
 #endif
 
     o.color = v.color;
-    
+
 #ifndef A_VERTEX_COLOR_DEGAMMA_OFF
     o.color.rgb = aGammaToLinear(o.color.rgb);
 #endif
-    
+
     o.texcoords.xy = A_TEX_TRANSFORM_SCROLL_SPIN(_MainTex, v.texcoords.xy);
-    
+
 #ifdef _PARTICLE_EFFECTS_ON
     o.uv_ParticleEffectMask1 = A_TEX_TRANSFORM_SCROLL_SPIN(_ParticleEffectMask1, v.texcoords.xy);
     o.uv_ParticleEffectMask2 = A_TEX_TRANSFORM_SCROLL_SPIN(_ParticleEffectMask2, v.texcoords.xy);
@@ -121,7 +121,7 @@ AFragmentInput aMainVertexShader(
 #if defined(A_PARTICLE_LIGHTING_ON) || defined(VAPOR_TRANSLUCENT_FOG_ON)
     o.positionWorld = positionWorld;
 #endif
-#ifdef A_PARTICLE_LIGHTING_ON	
+#ifdef A_PARTICLE_LIGHTING_ON
     // 1 Directional, 4 Point lights, and Light probes.
     o.ambient = _LightColor0.rgb * aDotClamp(_WorldSpaceLightPos0.xyz, o.normalWorld);
     o.ambient += aShade4PointLights(o.positionWorld.xyz, o.normalWorld);
@@ -132,12 +132,12 @@ AFragmentInput aMainVertexShader(
     o.texcoords.zw = A_TEX_TRANSFORM_SCROLL_SPIN(_MainTex, v.texcoords.zw);
     o.blend = v.texcoordBlend;
 #endif
-    
+
     UNITY_TRANSFER_FOG(o,o.vertex);
     return o;
 }
 
-/// Controls how the particle is faded out based on scene intersection, rim, 
+/// Controls how the particle is faded out based on scene intersection, rim,
 /// and camera distance.
 half aFadeParticle(
     AFragmentInput i)
@@ -167,7 +167,7 @@ half aFadeParticle(
 
     fade = aRimLight(fade, bias, _RimFadePower, 1.0h - NdotV);
 #endif
-    
+
     return fade;
 }
 
@@ -189,7 +189,7 @@ half4 aParticleEffects(
     color *= tex2D(_ParticleEffectMask2, i.uv_ParticleEffectMask2);
 #endif
 
-#ifdef A_PARTICLE_LIGHTING_ON	
+#ifdef A_PARTICLE_LIGHTING_ON
     color.rgb *= ShadeSHPerPixel(i.normalWorld, i.ambient, i.positionWorld);
 #endif
 

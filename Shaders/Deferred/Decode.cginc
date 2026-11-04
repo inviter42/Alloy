@@ -18,11 +18,11 @@ struct AFragmentInput {
 };
 
 AFragmentInput aMainVertexShader(
-    float4 vertex : POSITION, 
+    float4 vertex : POSITION,
     float2 texcoord : TEXCOORD0)
 {
     AFragmentInput o;
-    o.vertex = UnityObjectToClipPos(vertex);
+    o.vertex = mul(UNITY_MATRIX_MVP, vertex);
     o.texcoord = texcoord.xy;
 #ifdef UNITY_SINGLE_PASS_STEREO
     o.texcoord = TransformStereoScreenSpaceTex(o.texcoord, 1.0f);

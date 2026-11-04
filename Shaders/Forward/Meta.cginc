@@ -43,8 +43,6 @@ float4 aMainFragmentShader(
     o.Albedo = s.albedo + (s.f0 * (s.beckmannRoughness * 0.5h));
 #endif
 
-    o.SpecularColor = s.f0;
-
 #ifndef A_EMISSIVE_COLOR_ON
     o.Emission = A_BLACK;
 #else

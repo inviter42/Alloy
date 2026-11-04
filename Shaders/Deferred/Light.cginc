@@ -31,7 +31,7 @@ aMainFragmentShader(
 {
     ASurface s = aDeferredSurface(i);
     ADirect d = aNewDirect();
-    float fadeDist = UnityComputeShadowFadeDistance(s.positionWorld, s.viewDepth);
+    float fadeDist = UnityDeferredComputeFadeDistance(s.positionWorld, s.viewDepth);
     float4 lightCoord = 0.0f;
     float3 lightVector = 0.0f;
     half3 lightAxis = 0.0h;

@@ -24,7 +24,6 @@
 #include "UnityImageBasedLighting.cginc"
 #include "UnityInstancing.cginc"
 #include "UnityLightingCommon.cginc"
-#include "UnityShaderUtilities.cginc"
 #include "UnityShaderVariables.cginc"
 #include "UnityShadowLibrary.cginc"
 #include "UnityStandardUtils.cginc"
@@ -55,15 +54,15 @@
 // Lighting vertex data.
 #if defined(A_INDIRECT_ON) && defined(A_DIRECT_ON)
     #define A_FORWARD_TEXCOORD0 half4 giData : TEXCOORD0;
-    #define A_FORWARD_TEXCOORD1 UNITY_SHADOW_COORDS(1)
+    #define A_FORWARD_TEXCOORD1 SHADOW_COORDS(1)
 #elif defined(A_INDIRECT_ON)
     #define A_FORWARD_TEXCOORD0 half4 giData : TEXCOORD0;
 
     #ifdef A_SHADOW_MASKS_BUFFER_ON
-        #define A_FORWARD_TEXCOORD1 UNITY_SHADOW_COORDS(1)
+        #define A_FORWARD_TEXCOORD1 SHADOW_COORDS(1)
     #endif
 #elif defined(A_DIRECT_ON)
-    #define A_FORWARD_TEXCOORD0 UNITY_SHADOW_COORDS(0)
+    #define A_FORWARD_TEXCOORD0 SHADOW_COORDS(0)
     
     // Reduce v2f transfer cost for pure directional lights.
     #if !defined(DIRECTIONAL) && !defined(A_LIGHTMAP_SHADOW_MIXING_ON)
@@ -425,7 +424,7 @@ void aForwardVertexShader(
         #ifdef A_SCREENSPACE_SHADOWS_ON
             o._ShadowCoord = screenPos;
         #else
-            UNITY_TRANSFER_SHADOW(o, v.uv1);
+            TRANSFER_SHADOW(o);
         #endif
 
         #if !defined(DIRECTIONAL) && !defined(A_LIGHTMAP_SHADOW_MIXING_ON)
@@ -571,7 +570,7 @@ half4 aForwardLitColorShader(
     ASurface s = aForwardSurface(i, facingSign);
 
 #ifdef A_LIGHTING_ON
-    half shadow = UNITY_SHADOW_ATTENUATION(i, s.positionWorld);
+    half shadow = SHADOW_ATTENUATION(i);
 
     #ifdef A_INDIRECT_ON
         UnityGI gi = aFragmentGi(i, s, shadow);
