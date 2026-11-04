@@ -46,9 +46,7 @@ public class AlloyRenderQueueDrawer : AlloyFieldDrawer {
 }
 
 public class AlloyEnableInstancingDrawer : AlloyFieldDrawer {
-    public override void Draw(AlloyFieldDrawerArgs args) {
-        args.Editor.MatEditor.EnableInstancingField();
-    }
+    public override void Draw(AlloyFieldDrawerArgs args) { }
 
     public AlloyEnableInstancingDrawer(AlloyInspectorBase editor, MaterialProperty property) : base(editor, property) {
     }
